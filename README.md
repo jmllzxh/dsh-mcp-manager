@@ -63,23 +63,3 @@ mcp-plugin/                       ← 直接作为 GitHub 仓库根目录
     └── ui.js                     # 宿主侧空座占位
 ``` 
 
-## 自测
-
-构建时三项自测已在系统 temp（`%TEMP%\dsh-mcp-plugin-tests\`）真实执行并通过。
-以下命令均假设当前目录为包根（测试脚本构建期生成于 temp，不随仓库分发）：
-
-```powershell
-node --check lib\index.js
-node --check lib\client.js
-node "%TEMP%\dsh-mcp-plugin-tests\parser.roundtrip.test.mjs"        # 真实文件(只读) round-trip + 增改删字节恢复
-node "%TEMP%\dsh-mcp-plugin-tests\e2e.http.test.mjs"                # HTTP CRUD 端到端（DSH_HOME 指向 temp）
-node "%TEMP%\dsh-mcp-plugin-tests\atomic.interop.test.mjs" local    # 原子写：回退路径
-# 官方包命中路径需临时 junction（用后即删）：
-#   New-Item -ItemType Junction node_modules\@deepseek-ai\dsh-atomic-write `
-#     -Target %USERPROFILE%\.dsh\profiles\node_modules\@deepseek-ai\dsh-atomic-write
-node "%TEMP%\dsh-mcp-plugin-tests\atomic.interop.test.mjs" official
-```
-
-风险提示：解析器刻意窄化——手工把受管段改成非常规缩进/键名会使其“不透明”而不再出现在 UI 中
-（字节仍保留）；配置写入方的并发编辑依赖 mtime 缓存与单机假设，不做跨进程加锁。
-
