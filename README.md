@@ -63,3 +63,8 @@ mcp-plugin/                       ← 直接作为 GitHub 仓库根目录
     └── ui.js                     # 宿主侧空座占位
 ``` 
 
+## 安装命令
+
+```php
+dsh plugin --profile web add github:jmllzxh/dsh-mcp-manager
+```
