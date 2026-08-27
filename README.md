@@ -47,19 +47,16 @@ and hot-reload into every session after save.
 
 ## 项目结构
 
-mcp-plugin/                       
-├── .gitignore                    
-├── README.md                       
-├── package.json                  
-├── docs/
-│   └── specs/
-│       ├── BUILD-SPEC.md         
-│       ├── client-contract.md   
-│       └── host-contract.md      
-└── lib/
-    ├── index.js                  
-    ├── client.js                 
-    └── ui.js                    
+理解任务
+  → 加载上下文
+  → 生成计划
+  → 选择工具
+  → 执行安全门禁
+  → 调用工具
+  → 记录回执与证据
+  → 验证结果
+  → 纠偏或继续
+  → 输出结论与报告        
 
 ## 自测
 
