@@ -45,48 +45,22 @@ and hot-reload into every session after save.
 注意：client-modules 扫描器要求客户端包在 exports 中显式暴露 `"./package.json"`，
 本包已按此约定导出，以完成 `dsh.client` 平台发现。
 
-## 行如何挂载
+## 项目结构
 
-安装器做两件事：
-
-1. **两处 NTFS junction**：宿主半入口与 Web 客户端资产各建一个指向本包目录的 junction
-   （`.` → `lib/index.js` 经 package.json exports 暴露；`./client` → `lib/client.js` 经
-   dsh.client.platform=web 被 ModuleLoader 以 `@local/dsh-mcp-manager/ui` 加载；
-   `./ui` → `lib/ui.js` 空座占位）。
-2. **补丁行**：宿主半启动后在 `cordis.patch.yml` 末尾追加一个标准 `- insert:` 块
-   （无任何块的新文件会先生成整份模板含横幅注释）。其后所有受管 MCP 条目都 appended 到
-   最后一个 `- insert:` 块尾，格式如：
-
-   ```yaml
-       - id: mcp-burp
-         name: '@deepseek-ai/dsh-mcp-client'
-         config:
-           serverName: burp
-           transport: stdio
-           command: C:\path\to.exe
-           args:
-             - '-y'
-             - foo
-           env: {}
-   ```
-
-## 如何卸载
-
-1. 删除**两处 junction**（分别指向宿主插件目录与 Web 客户端资产目录的那两个链接本身；
-   不要删包体源目录）。
-2. 删除**补丁行**：打开 `~/.dsh/cordis.patch.yml`，移除由本包追加的受管条目段
-   （每段以 4 空格缩进的 `- id: mcp-*` 开始）；若是本包创建的文件，可连同头部
-   `# Managed MCP servers are appended here…` 横幅与整个 `- insert:` 块一起移除。
-   手工注释与非本包条目不在清理范围。若存在崩溃遗留的 `cordis.patch.yml.lock`
-   （官方跨进程 writer 锁），可一并删除。
-
-## 写入与并发
-
-写操作 = 进程内互斥锁 → 官方 `@deepseek-ai/dsh-atomic-write` 跨进程 writer 锁
-（`withFileLock`，等待上限 2s，超时返回 500/"locked"）→ 读改写事务 → rename 原子提交。
-优先复用官方包（随宿主 node_modules 树可解析）；在无宿主树的独立环境自动回退到
-语义等价的本地实现（独占创建随机 tmp + fsync + rename，失败清理）。孤儿 `.lock`
-按官方语义不做自动偷删，交由运维清理。
+mcp-plugin/                       ← 直接作为 GitHub 仓库根目录
+├── .gitignore                    ← ★ 新增：node_modules/、日志等
+├── README.md                     ← ★ 更新：新增 中文 + English 段 
+├── package.json                  ← ★ 
+├── docs/
+│   └── specs/
+│       ├── BUILD-SPEC.md         ← ★ 收录构建规格（已脱敏）
+│       ├── client-contract.md    ← ★ 客户端契约
+│       └── host-contract.md      ← ★ 宿主契约
+└── lib/
+    ├── index.js                  # 宿主半：/mcp-manager CRUD API + 窄解析器（938 行）
+    ├── client.js                 # 浏览器半：设置页 React UI factory bundle（769 行）
+    └── ui.js                     # 宿主侧空座占位
+    
 
 ## 自测
 
@@ -108,6 +82,3 @@ node "%TEMP%\dsh-mcp-plugin-tests\atomic.interop.test.mjs" official
 风险提示：解析器刻意窄化——手工把受管段改成非常规缩进/键名会使其“不透明”而不再出现在 UI 中
 （字节仍保留）；配置写入方的并发编辑依赖 mtime 缓存与单机假设，不做跨进程加锁。
 
-## License
-
-[MIT](LICENSE)
