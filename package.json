@@ -2,7 +2,6 @@
   "name": "@local/dsh-mcp-manager",
   "description": "Web 设置页内管理 DSH 全局 MCP 服务器（~/.dsh/cordis.patch.yml）",
   "version": "0.1.0",
-  "license": "MIT",
   "type": "module",
   "main": "./lib/index.js",
   "exports": {
