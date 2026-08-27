@@ -50,7 +50,7 @@ and hot-reload into every session after save.
 ```php
 mcp-plugin/                       ← 直接作为 GitHub 仓库根目录
 ├── .gitignore                    ← ★ 新增：node_modules/、日志等
-├── README.md                     ← ★ 更新：新增 English 段
+├── README.md                     ← ★ 更新：增加 中文 + English 段
 ├── package.json                  ← ★ 更新：
 ├── docs/
 │   └── specs/
