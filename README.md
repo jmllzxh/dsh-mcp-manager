@@ -58,8 +58,8 @@ mcp-plugin/                       ← 直接作为 GitHub 仓库根目录
 │       ├── client-contract.md    ← ★ 客户端契约
 │       └── host-contract.md      ← ★ 宿主契约
 └── lib/
-    ├── index.js                  # 宿主半：/mcp-manager CRUD API + 窄解析器（938 行）
-    ├── client.js                 # 浏览器半：设置页 React UI factory bundle（769 行）
+    ├── index.js                  # 宿主半：/mcp-manager CRUD API + 窄解析器
+    ├── client.js                 # 浏览器半：设置页 React UI factory bundle
     └── ui.js                     # 宿主侧空座占位
 ```
 
