@@ -49,18 +49,17 @@ and hot-reload into every session after save.
 
 mcp-plugin/                       ← 直接作为 GitHub 仓库根目录
 ├── .gitignore                    ← ★ 新增：node_modules/、日志等
-├── README.md                     ← ★ 更新：新增 中文 + English 段 
-├── package.json                  ← ★ 
+├── README.md                     ← ★ 更新：新增 中文 + English 段  
+├── package.json                  ← ★ 更新：
 ├── docs/
 │   └── specs/
-│       ├── BUILD-SPEC.md         ← ★ 收录构建规格（已脱敏）
+│       ├── BUILD-SPEC.md         ← ★ 收录构建规格
 │       ├── client-contract.md    ← ★ 客户端契约
 │       └── host-contract.md      ← ★ 宿主契约
 └── lib/
     ├── index.js                  # 宿主半：/mcp-manager CRUD API + 窄解析器（938 行）
     ├── client.js                 # 浏览器半：设置页 React UI factory bundle（769 行）
     └── ui.js                     # 宿主侧空座占位
-    
 
 ## 自测
 
